@@ -1,23 +1,30 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.js',
+  entry: "./src/index.js",
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'build'),
+    filename: "[name].[hash].js",
+    path: path.resolve(__dirname, "dist"),
     clean: true,
   },
   module: {
     rules: [
       {
         test: /\.css$/i,
-        use: ['css-loader'],
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: './src/index.html' })],
+  plugins: [
+    new HtmlWebpackPlugin({ template: "./src/index.html" }),
+    new CleanWebpackPlugin({ cleanAfterEveryBuildPatterns: ["dist"] }),
+  ],
   devServer: {
     historyApiFallback: true,
+    hot: true,
+    host: "localhost",
+    port: 5500,
   },
 };
